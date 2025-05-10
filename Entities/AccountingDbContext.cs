@@ -13,7 +13,7 @@ namespace Entities
         {
             modelBuilder.Entity<Expense>()
                 .HasMany(e => e.ExpenseItems)
-                .WithOne(i => i.Expense)
+                .WithOne()
                 .HasForeignKey(i => i.ExpenseId);
         }
     }
