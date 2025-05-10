@@ -29,6 +29,14 @@ namespace Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id) => Ok(await _service.GetExpenseByIdAsync(id));
 
+        [HttpGet("latest-document-number")]
+        public async Task<IActionResult> GetLatestDocumentNumber([FromQuery] DateTime date)
+        {
+            // Convert the date to UTC
+            var utcDate = DateTime.SpecifyKind(date.Date, DateTimeKind.Utc);
+            return Ok(await _service.GetLatestDocumentNumberAsync(utcDate));
+        }
+
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Expense expense)
         {

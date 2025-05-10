@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Entities;
+using System.Linq;
+using System;
 
 namespace Repositories
 {
@@ -40,6 +42,19 @@ namespace Repositories
                 _context.Expenses.Remove(expense);
                 await _context.SaveChangesAsync();
             }
+        }
+
+        public async Task<string> GetLatestDocumentNumberAsync(DateTime date)
+        {
+            var startOfDay = date.Date;
+            var endOfDay = startOfDay.AddDays(1).AddTicks(-1);
+
+            var latestExpense = await _context.Expenses
+                .Where(e => e.Date >= startOfDay && e.Date <= endOfDay)
+                .OrderByDescending(e => e.DocumentNumber)
+                .FirstOrDefaultAsync();
+
+            return latestExpense?.DocumentNumber ?? string.Empty;
         }
     }
 } 

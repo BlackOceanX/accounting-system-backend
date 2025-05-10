@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using Entities;
 using Repositories;
+using System;
 
 namespace Services
 {
@@ -40,5 +41,6 @@ namespace Services
         public Task CreateExpenseAsync(Expense expense) => _repository.AddAsync(expense);
         public Task UpdateExpenseAsync(Expense expense) => _repository.UpdateAsync(expense);
         public Task DeleteExpenseAsync(int id) => _repository.DeleteAsync(id);
+        public Task<string> GetLatestDocumentNumberAsync(DateTime date) => _repository.GetLatestDocumentNumberAsync(date);
     }
 } 

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Entities;
+using System;
 
 namespace Services
 {
@@ -12,5 +13,6 @@ namespace Services
         Task CreateExpenseAsync(Expense expense);
         Task UpdateExpenseAsync(Expense expense);
         Task DeleteExpenseAsync(int id);
+        Task<string> GetLatestDocumentNumberAsync(DateTime date);
     }
 } 

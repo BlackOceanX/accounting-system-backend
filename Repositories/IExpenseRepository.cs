@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Entities;
+using System;
 
 namespace Repositories
 {
@@ -11,5 +12,6 @@ namespace Repositories
         Task AddAsync(Expense expense);
         Task UpdateAsync(Expense expense);
         Task DeleteAsync(int id);
+        Task<string> GetLatestDocumentNumberAsync(DateTime date);
     }
 } 
