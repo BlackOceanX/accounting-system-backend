@@ -12,6 +12,6 @@ namespace Entities
         public string Unit { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal Amount { get; set; }
-        public Expense Expense { get; set; }
+        public Expense? Expense { get; set; }
     }
 } 

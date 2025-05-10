@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Services;
 using Entities;
+using System;
 
 namespace Controllers
 {
@@ -24,6 +25,10 @@ namespace Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] Expense expense)
         {
+            // Convert DateTime values to UTC
+            expense.Date = DateTime.SpecifyKind(expense.Date, DateTimeKind.Utc);
+            expense.DueDate = DateTime.SpecifyKind(expense.DueDate, DateTimeKind.Utc);
+            
             await _service.CreateExpenseAsync(expense);
             return Ok();
         }
@@ -32,6 +37,11 @@ namespace Controllers
         public async Task<IActionResult> Put(int id, [FromBody] Expense expense)
         {
             if (id != expense.Id) return BadRequest();
+            
+            // Convert DateTime values to UTC
+            expense.Date = DateTime.SpecifyKind(expense.Date, DateTimeKind.Utc);
+            expense.DueDate = DateTime.SpecifyKind(expense.DueDate, DateTimeKind.Utc);
+            
             await _service.UpdateExpenseAsync(expense);
             return Ok();
         }
