@@ -17,7 +17,14 @@ namespace Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get() => Ok(await _service.GetAllExpensesAsync());
+        public async Task<IActionResult> Get([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        {
+            if (pageNumber < 1) pageNumber = 1;
+            if (pageSize < 1) pageSize = 10;
+            if (pageSize > 100) pageSize = 100; // Limit maximum page size
+            
+            return Ok(await _service.GetPaginatedExpensesAsync(pageNumber, pageSize));
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id) => Ok(await _service.GetExpenseByIdAsync(id));
