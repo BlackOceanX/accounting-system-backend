@@ -1,3 +1,7 @@
+using Entities;
+using Repositories;
+using Services;
+using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,6 +17,11 @@ builder.Services.AddSwaggerGen(c =>
         Description = "An example API using .NET 9"
     });
 });
+
+builder.Services.AddDbContext<AccountingDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
+builder.Services.AddScoped<IExpenseService, ExpenseService>();
 
 var app = builder.Build();
 
