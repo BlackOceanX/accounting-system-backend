@@ -9,6 +9,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 builder.Services.AddEndpointsApiExplorer();
+
+// Add CORS
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -37,6 +49,9 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = string.Empty; // This will serve the Swagger UI at the root URL
     });
 }
+
+// Add CORS middleware
+app.UseCors();
 
 app.UseHttpsRedirection();
 app.MapControllers();
