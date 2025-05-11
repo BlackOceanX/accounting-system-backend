@@ -17,13 +17,31 @@ namespace Services
 
         public Task<IEnumerable<Expense>> GetAllExpensesAsync() => _repository.GetAllAsync();
         
-        public async Task<PaginationResult<Expense>> GetPaginatedExpensesAsync(int pageNumber, int pageSize)
+        public async Task<PaginationResult<Expense>> GetPaginatedExpensesAsync(
+            int pageNumber, 
+            int pageSize,
+            string search = null)
         {
             var expenses = await _repository.GetAllAsync();
-            var totalCount = expenses.Count();
+            
+            // Apply search filter
+            var query = expenses.AsQueryable();
+            
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                search = search.ToLower();
+                query = query.Where(e => 
+                    e.VendorName.ToLower().Contains(search) ||
+                    e.VendorDetail.ToLower().Contains(search) ||
+                    e.DocumentNumber.ToLower().Contains(search) ||
+                    e.Project.ToLower().Contains(search) ||
+                    e.ExpenseItems.Any(i => i.Description.ToLower().Contains(search)));
+            }
+            
+            var totalCount = query.Count();
             var totalPages = (int)System.Math.Ceiling(totalCount / (double)pageSize);
             
-            var items = expenses
+            var items = query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize);
 

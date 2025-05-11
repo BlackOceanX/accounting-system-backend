@@ -8,7 +8,10 @@ namespace Services
     public interface IExpenseService
     {
         Task<IEnumerable<Expense>> GetAllExpensesAsync();
-        Task<PaginationResult<Expense>> GetPaginatedExpensesAsync(int pageNumber, int pageSize);
+        Task<PaginationResult<Expense>> GetPaginatedExpensesAsync(
+            int pageNumber, 
+            int pageSize,
+            string search = null);
         Task<Expense> GetExpenseByIdAsync(int id);
         Task CreateExpenseAsync(Expense expense);
         Task UpdateExpenseAsync(Expense expense);
