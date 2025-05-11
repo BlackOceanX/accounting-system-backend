@@ -30,7 +30,47 @@ namespace Repositories
 
         public async Task UpdateAsync(Expense expense)
         {
-            _context.Expenses.Update(expense);
+            // Get the existing expense with its items
+            var existingExpense = await _context.Expenses
+                .Include(e => e.ExpenseItems)
+                .FirstOrDefaultAsync(e => e.Id == expense.Id);
+
+            if (existingExpense == null)
+                throw new KeyNotFoundException($"Expense with ID {expense.Id} not found");
+
+            // Update expense properties
+            _context.Entry(existingExpense).CurrentValues.SetValues(expense);
+
+            // Handle expense items
+            var existingItems = existingExpense.ExpenseItems.ToList();
+            var updatedItems = expense.ExpenseItems ?? new List<ExpenseItem>();
+
+            // Remove items that are no longer present
+            var itemsToRemove = existingItems
+                .Where(ei => !updatedItems.Any(ui => ui.Id == ei.Id))
+                .ToList();
+            foreach (var item in itemsToRemove)
+            {
+                _context.ExpenseItems.Remove(item);
+            }
+
+            // Add new items and update existing ones
+            foreach (var item in updatedItems)
+            {
+                var existingItem = existingItems.FirstOrDefault(ei => ei.Id == item.Id);
+                if (existingItem == null)
+                {
+                    // New item
+                    item.ExpenseId = expense.Id;
+                    _context.ExpenseItems.Add(item);
+                }
+                else
+                {
+                    // Update existing item
+                    _context.Entry(existingItem).CurrentValues.SetValues(item);
+                }
+            }
+
             await _context.SaveChangesAsync();
         }
 

@@ -16,7 +16,6 @@ namespace Entities
         public DateTime DueDate { get; set; }
         public string Currency { get; set; }
         public decimal Discount { get; set; }
-        public bool VatIncluded { get; set; }
         public string Remark { get; set; }
         public string InternalNote { get; set; }
         public decimal TotalAmount { get; set; }
