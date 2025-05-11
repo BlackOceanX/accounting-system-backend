@@ -44,7 +44,7 @@ dotnet ef database update
 dotnet run
 ```
 
-The API will be available at `https://localhost:5001` and the Swagger UI at `https://localhost:5001/swagger`.
+The API will be available at `https://localhost:5001`
 
 ## 🏗️ Project Structure
 
@@ -54,7 +54,38 @@ The API will be available at `https://localhost:5001` and the Swagger UI at `htt
 - `Entities/` - Database models and entities
 - `Migrations/` - Database migration files
 
-## 🔧 Configuration
+## 📊 Database Schema
+
+### Expenses
+- `Id` (int, PK)
+- `DocumentNumber` (string)
+- `VendorName` (string)
+- `VendorDetail` (string)
+- `Project` (string)
+- `ReferenceNumber` (string)
+- `Date` (DateTime)
+- `CreditTerm` (int)
+- `DueDate` (DateTime)
+- `Currency` (string)
+- `Discount` (decimal)
+- `Remark` (string)
+- `InternalNote` (string)
+- `TotalAmount` (decimal)
+
+### ExpenseItems
+- `Id` (int, PK)
+- `ExpenseId` (int, FK)
+- `Description` (string)
+- `Category` (string)
+- `Quantity` (decimal)
+- `Unit` (string)
+- `UnitPrice` (decimal)
+- `Amount` (decimal)
+
+### Relationships
+- Expenses 1:N ExpenseItems
+
+## ⚙️ Configuration
 
 The application can be configured through the following files:
 - `appsettings.json` - Main configuration file

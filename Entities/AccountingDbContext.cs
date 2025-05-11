@@ -15,6 +15,22 @@ namespace Entities
                 .HasMany(e => e.ExpenseItems)
                 .WithOne()
                 .HasForeignKey(i => i.ExpenseId);
+
+            // Add indexes for searchable fields
+            modelBuilder.Entity<Expense>()
+                .HasIndex(e => e.VendorName);
+
+            modelBuilder.Entity<Expense>()
+                .HasIndex(e => e.VendorDetail);
+
+            modelBuilder.Entity<Expense>()
+                .HasIndex(e => e.DocumentNumber);
+
+            modelBuilder.Entity<Expense>()
+                .HasIndex(e => e.Project);
+
+            modelBuilder.Entity<ExpenseItem>()
+                .HasIndex(e => e.Description);
         }
     }
 } 
